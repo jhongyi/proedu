@@ -1,0 +1,34 @@
+version: '2'
+
+services:
+
+  postgres:
+    image: postgres
+    volumes:
+      - /tmp/postgres:/var/lib/postgresql/data
+    ports:
+      - "0.0.0.0:5433:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mysecretpassword
+    container_name: 'wisign-postgres'
+  django:
+    build:
+      context: ../.
+      dockerfile: docker/Dockerfile-dev
+    links:
+      - postgres
+    volumes:
+      - ../.:/home/docker/code
+    env_file:
+      - ../config/django.env
+    depends_on:
+      - postgres
+    container_name: 'wisign-uwsgi'
+    command: ["../bin/docker-entrypoint-web-dev.sh"]
+    #command: ["/bin/bash"]
+    ports:
+      - "0.0.0.0:8000:8000"
+
+
+

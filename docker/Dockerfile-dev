@@ -1,0 +1,71 @@
+# Copyright 2013 Thatcher Peskens
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# 設定 base image
+FROM python:3.5
+#ENV PYTHONUNBUFFERED=1
+
+# 要先更新才可以安裝nginx supervisor
+RUN apt-get update
+
+
+# 安裝postgres相關
+RUN apt-get install -y vim
+
+RUN pip install --upgrade pip
+
+# 安裝 uwsgi
+RUN yes | pip install uwsgi
+
+
+#### 設定 Dockerfile 會用到的環境變數 ###
+
+# container 放code的位置
+ENV DOCKYARD_SRCHOME /home/docker/code/src
+# 靜態檔案的位置
+ENV STATICFILES_PATH /var/www/static
+# 設定 DJANGO_SETTINGS_MODULE  DEBUG模式
+ENV DJANGO_SETTINGS_MODULE project.settings.local
+
+#####################################
+
+# 先把requirements.txt複製進去安裝，因為這會比較久
+RUN echo '>>>>>>' `pwd`
+ADD config/requirements.txt /
+RUN pip install -r /requirements.txt
+
+
+
+# 把源碼複製進去
+#COPY src ${DOCKYARD_SRCHOME}
+# 把設定檔複製進去
+#COPY config ${DOCKYARD_CONFIGHOME}
+
+
+# 把檔案全部複製進去
+ADD . /home/docker/code/
+
+
+# 建立靜態檔案資料夾
+RUN mkdir -p ${STATICFILES_PATH}
+
+# 切換工作目錄
+WORKDIR ${DOCKYARD_SRCHOME}
+
+# sh變成可執行檔
+RUN find ../bin -name "*.sh" -exec chmod +x {} \;
+
+
+
+

@@ -1,0 +1,42 @@
+version: '2'
+
+services:
+
+  postgres:
+    image: postgres
+    volumes:
+      - /tmp/postgres:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mysecretpassword
+    container_name: 'wisign-postgres'
+  uwsgi:
+    build:
+      context: .
+      dockerfile: Dockerfile-dev
+    links:
+      - postgres
+    volumes:
+      - .:/home/docker/code
+#      - /var/www/static
+    env_file:
+      - ./config/django.env
+    environment:
+      - DJANGO_SETTINGS_MODULE=project.settings.production
+    depends_on:
+      - postgres
+    container_name: 'wisign-uwsgi'
+    command: ["/home/docker/code/docker-entrypoint-web-dev2.sh"]
+  nginx:
+    build: ./nginx
+    links:
+      - uwsgi
+    volumes_from:
+      - uwsgi
+    ports:
+      - "8001:80"
+    container_name: "wisign-nginx"
+
+
