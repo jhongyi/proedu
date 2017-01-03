@@ -28,7 +28,7 @@ services:
     command: ["../bin/docker-entrypoint-web-dev.sh"]
     #command: ["/bin/bash"]
     ports:
-      - "0.0.0.0:8000:8000"
+      - "0.0.0.0:8001:8000"
 
 
 
