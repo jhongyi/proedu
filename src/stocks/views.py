@@ -1,5 +1,5 @@
-from django.contrib.auth.models import User
-from users.serializers import UserSerializer
+from stocks.models import Stock
+from .serializers import StockSerializer
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.status import (
@@ -13,11 +13,11 @@ from rest_framework.generics import (
     CreateAPIView
 )
 
-class UserListAPIView(CreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+class StockListAPIView(CreateAPIView):
+    queryset = Stock.objects.all()
+    serializer_class = StockSerializer
 
-    def list(self, request):
+    def create(self, request):
         queryset = self.get_queryset()
-        serializer = UserSerializer(queryset, many=True)
+        serializer = StockSerializer(queryset, many=True)
         return Response(HTTP_201_CREATED, serializer.data)

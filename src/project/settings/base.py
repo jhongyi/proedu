@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     # third-party
     'rest_framework',
     'rest_framework_docs',
+
+    # custom
+    'stocks'
 ]
 
 MIDDLEWARE = [
