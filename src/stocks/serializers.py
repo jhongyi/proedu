@@ -1,6 +1,7 @@
 from stocks.models import Stock
 from rest_framework.serializers import (
     CharField,
+    IntegerField,
     EmailField,
     DateTimeField,
     Serializer,
