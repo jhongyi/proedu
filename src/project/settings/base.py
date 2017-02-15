@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'rest_framework_docs',
 
     # custom
-    'stocks'
+    'stocks',
+    'users'
 ]
 
 MIDDLEWARE = [

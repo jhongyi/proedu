@@ -25,5 +25,6 @@ urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='index.html')),
 
     # api url
+    url(r'^api/users/', include("users.urls", namespace="users-api")),
     url(r'^api/stocks/', include("stocks.urls", namespace='stocks-api')),
 ]
