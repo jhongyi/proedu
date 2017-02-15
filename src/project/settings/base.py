@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     # third-party
     'rest_framework',
     'rest_framework_docs',
+    'rest_framework.authtoken',
 
     # custom
     'stocks',

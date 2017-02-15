@@ -22,7 +22,11 @@ from rest_framework.permissions import (
     IsAuthenticated,
 )
 
+#from django.contrib.auth import authenticate
+#from rest_framework.authtoken.models import Token
+
 class UserListAPIView(APIView):
+
     def post(self, request):
         users = User.objects.all()
         serializer = UserSerializer(users, many=True)
@@ -50,3 +54,4 @@ class UserUpdateListAPIView(UpdateAPIView):
             self.perform_update(serializer)
             return Response(serializer.data, status=HTTP_201_CREATED)
         return Response(serializer.data, status=HTTP_500_INTERNAL_SERVER_ERROR)
+        
