@@ -26,5 +26,4 @@ urlpatterns = [
 
     # api url
     url(r'^api/users/', include("users.urls", namespace="users-api")),
-    url(r'^api/stocks/', include("stocks.urls", namespace='stocks-api')),
 ]
